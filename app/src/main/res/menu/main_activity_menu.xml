@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add_new_shoppingList"
+        android:title="Create shooping list"
+        android:icon="@drawable/ic_menu_add"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/edit_shoppingList"
+        android:title="Edit list"
+        android:icon="@drawable/ic_menu_edit"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/delete_shoppingList"
+        android:title="Delete list"
+        android:icon="@drawable/ic_menu_remove"
+        app:showAsAction="ifRoom" />
+
+</menu>

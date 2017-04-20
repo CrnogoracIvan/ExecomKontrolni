@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
@@ -28,6 +29,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ORMLightHelper databaseHelper;
     private ShoppingList a;
+    private TextView ShoppingListName;
 
     public static String CONTACT_KEY = "ITEM_KEY";
 
@@ -67,17 +69,21 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-
-
         //Uzima polja iz baze i ubacuje ih u polja u aktivitiju
 
         final ListView listView = (ListView) findViewById(R.id.articleList);
-
-        // /JAKO BITAN RED KODA - Na ovaj nacin se ubacuje tacno onaj glumac na kojeg smo kliknuli!
         int key = getIntent().getExtras().getInt(MainActivity.CONTACT_KEY);
 
+       //Upis imena liste
         try {
             a = getDatabaseHelper().getShoppingListDao().queryForId(key);
+
+           //uzmi polje u koje ces upisati tekst
+            ShoppingListName = (TextView) findViewById(R.id.shoppingList_list_name);
+
+            // upisi tekst
+            ShoppingListName.setText(a.getShoppingListName());
+
 
         } catch (SQLException e) {
             e.printStackTrace();

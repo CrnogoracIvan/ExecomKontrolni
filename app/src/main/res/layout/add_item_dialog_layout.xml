@@ -51,7 +51,7 @@
             android:id="@+id/btn_add_item_in_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Shopping list"/>
+            android:text="Add item in cart"/>
 
     </LinearLayout>
 

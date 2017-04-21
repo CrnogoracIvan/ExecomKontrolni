@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -118,14 +120,14 @@ public class MainActivity extends AppCompatActivity {
                       //unos zapisa u listu.
                         try {
                             getDatabaseHelper().getShoppingListDao().create(SL);
-
-                            //REFRESH liste
-                            refresh();
+                            Log.i("Sta je u bazi?", getDatabaseHelper().getShoppingListDao().queryForAll().toString());
 
                         } catch (java.sql.SQLException e) {
                             e.printStackTrace();
                         }
 
+                        //REFRESH liste
+                        refresh();
                         dialog.dismiss();
 
                     }
@@ -152,9 +154,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
+
 
         refresh();
+
+        super.onResume();
+        try {
+            Log.i("Sta je u bazi?", getDatabaseHelper().getShoppingListDao().queryForAll().toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

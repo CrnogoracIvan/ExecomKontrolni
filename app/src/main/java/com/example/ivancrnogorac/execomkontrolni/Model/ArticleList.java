@@ -11,7 +11,7 @@ public class ArticleList {
     public static final String FIELD_NAME_ID = "id";
     public static final String FIELD_NAME_ITEM = "Item name";
     public static final String FIELD_NAME_AMOUNT = "Amount";
-    public static final String FIELD_NAME_LIST_NAME = "List";
+    public static final String FIELD_NAME_SHLIST_NAME = "List";
 
 
     @DatabaseField (columnName = FIELD_NAME_ID, generatedId = true)
@@ -21,9 +21,9 @@ public class ArticleList {
     private String itemName;
 
     @DatabaseField (columnName = FIELD_NAME_AMOUNT)
-    private int amount;
+    private String amount;
 
-    @DatabaseField (columnName = FIELD_NAME_LIST_NAME, foreign = true, foreignAutoRefresh = true)
+    @DatabaseField (columnName = FIELD_NAME_SHLIST_NAME, foreign = true, foreignAutoRefresh = true)
     private ShoppingList listName;
 
 
@@ -52,11 +52,11 @@ public class ArticleList {
         this.itemName = itemName;
     }
 
-    public int getAmount() {
+    public String getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 
@@ -78,6 +78,6 @@ public class ArticleList {
 
     @Override
     public String toString() {
-        return "Item: " + itemName + ", amount: " + amount;
+        return "Item: " + itemName + ", amount: " + amount + " " + listName;
     }
 }

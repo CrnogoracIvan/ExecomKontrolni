@@ -3,6 +3,7 @@ package com.example.ivancrnogorac.execomkontrolni.Activities;
 import android.app.Dialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,7 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity {
 
     private ORMLightHelper databaseHelper;
-    private ShoppingList a;
+    private ShoppingList SH;
     private TextView ShoppingListName;
 
     public static String CONTACT_KEY = "ITEM_KEY";
@@ -69,6 +70,7 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+
         //Uzima polja iz baze i ubacuje ih u polja u aktivitiju
 
         final ListView listView = (ListView) findViewById(R.id.articleList);
@@ -76,13 +78,13 @@ public class ListActivity extends AppCompatActivity {
 
        //Upis imena liste
         try {
-            a = getDatabaseHelper().getShoppingListDao().queryForId(key);
+            SH = getDatabaseHelper().getShoppingListDao().queryForId(key);
 
            //uzmi polje u koje ces upisati tekst
             ShoppingListName = (TextView) findViewById(R.id.shoppingList_list_name);
 
             // upisi tekst
-            ShoppingListName.setText(a.getShoppingListName());
+            ShoppingListName.setText(SH.getShoppingListName());
 
 
         } catch (SQLException e) {
@@ -94,19 +96,19 @@ public class ListActivity extends AppCompatActivity {
 
             List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryBuilder()
                     .where()
-                    .eq(ArticleList.FIELD_NAME_LIST_NAME, a.getId())
+                    .eq(ArticleList.FIELD_NAME_SHLIST_NAME, SH.getId())
                     .query();
 
             ListAdapter adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
             listView.setAdapter(adapter);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ArticleList AL = (ArticleList) listView.getItemAtPosition(position);
-                    //Toast.makeText(PripremaDetail.this, m.getmName()+" "+m.getmGenre()+" "+m.getmYear(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
+//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    ArticleList AL = (ArticleList) listView.getItemAtPosition(position);
+//                    //Toast.makeText(PripremaDetail.this, m.getmName()+" "+m.getmGenre()+" "+m.getmYear(), Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,13 +122,19 @@ public class ListActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        refresh();
+        super.onStart();
+    }
+
     // Reakcije na pritisak dugmica u meniju.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
 
-//            //DIALOG ZA UNOS PODATAKA o novoj listi
+//            //DIALOG ZA UNOS PODATAKA o novom artiklu
             case R.id.add_new_item:
 
                 final Dialog dialog = new Dialog(this);
@@ -142,19 +150,20 @@ public class ListActivity extends AppCompatActivity {
 
                         ArticleList AL = new ArticleList();
                         AL.setItemName(catchArticleListName.getText().toString());
-                        AL.setAmount(Integer.parseInt(catchArticleListAmount.getText().toString()));
+                        AL.setAmount(catchArticleListAmount.getText().toString());;
+                        AL.setListName(SH);
 
                         //unos zapisa u listu.
                         try {
                             getDatabaseHelper().getArticleListDao().create(AL);
-
-                            //REFRESH liste
-                            refresh();
+                            Log.i("Sta je u bazi?", getDatabaseHelper().getArticleListDao().queryForAll().toString());
 
                         } catch (java.sql.SQLException e) {
                             e.printStackTrace();
                         }
 
+                        //REFRESH liste
+                        refresh();
                         dialog.dismiss();
 
                     }
@@ -181,9 +190,15 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
 
         refresh();
+
+        super.onResume();
+        try {
+            Log.i("Sta je u bazi?", getDatabaseHelper().getArticleListDao().queryForAll().toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 

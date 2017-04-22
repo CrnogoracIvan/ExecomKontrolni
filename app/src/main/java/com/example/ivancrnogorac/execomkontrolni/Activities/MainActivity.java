@@ -2,6 +2,7 @@ package com.example.ivancrnogorac.execomkontrolni.Activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.example.ivancrnogorac.execomkontrolni.Dialog.AboutDialog;
 import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
 import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
@@ -134,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
                 });
                 dialog.show();
                 break;
-            //About dialog
 
-//            case R.id.about:
-//
-//                AlertDialog alertDialog = new oAppDialog(this).prepareDialog();
-//                alertDialog.show();
-//                break;
+            //About dialog
+            case R.id.about_app_dialog:
+
+                AlertDialog alertDialog = new AboutDialog(this).prepareDialog();
+                alertDialog.show();
+                break;
 
 //            //Brisanje liste.
 //            case R.id.delete_shoppingList:

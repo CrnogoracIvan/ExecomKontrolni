@@ -11,6 +11,8 @@ public class ArticleList {
     public static final String FIELD_NAME_ID = "id";
     public static final String FIELD_NAME_ITEM = "Item name";
     public static final String FIELD_NAME_AMOUNT = "Amount";
+    public static final String TABLE_FIELD_PURCHASED = "purchased";
+    public static final String TABLE_FIELD_PURCHASED_STATUS = "purchased_status";
     public static final String FIELD_NAME_SHLIST_NAME = "List";
 
 
@@ -22,6 +24,28 @@ public class ArticleList {
 
     @DatabaseField (columnName = FIELD_NAME_AMOUNT)
     private String amount;
+
+    public boolean isPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        this.purchased = purchased;
+    }
+
+    public String getPurchasedStatus() {
+        return purchasedStatus;
+    }
+
+    public void setPurchasedStatus(String purchasedStatus) {
+        this.purchasedStatus = purchasedStatus;
+    }
+
+    @DatabaseField(columnName = TABLE_FIELD_PURCHASED)
+    private boolean purchased;
+
+    @DatabaseField (columnName = TABLE_FIELD_PURCHASED_STATUS)
+    private String purchasedStatus;
 
     @DatabaseField (columnName = FIELD_NAME_SHLIST_NAME, foreign = true, foreignAutoRefresh = true)
     private ShoppingList listName;

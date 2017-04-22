@@ -131,8 +131,8 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
 
+            switch (item.getItemId()) {
 //            //DIALOG ZA UNOS PODATAKA o novom artiklu
             case R.id.add_new_item:
 
@@ -171,17 +171,16 @@ public class ListActivity extends AppCompatActivity {
                 break;
             //About dialog
 
-//            case R.id.about:
-//
-//                AlertDialog alertDialog = new oAppDialog(this).prepareDialog();
-//                alertDialog.show();
-//                break;
 
-//            //Brisanje liste.
-//            case R.id.delete_shoppingList:
-//                getDatabaseHelper().getShoppingListDao().delete(SL);
-//                finish();
-//                break;
+            //Brisanje liste.
+            case R.id.delete_list:
+                try {
+                    getDatabaseHelper().getShoppingListDao().delete(SH);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                finish();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

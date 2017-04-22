@@ -2,9 +2,16 @@ package com.example.ivancrnogorac.execomkontrolni.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
 import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
@@ -34,6 +41,7 @@ public class ArticleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article);
 
         int key = getIntent().getExtras().getInt(ListActivity.CONTACT_KEY);
+        final CheckBox c = (CheckBox) findViewById(R.id.item_checkbox);
 
         try {
             AL = getDatabaseHelper().getArticleListDao().queryForId(key);
@@ -43,10 +51,62 @@ public class ArticleActivity extends AppCompatActivity {
 
             catchArticleName.setText(AL.getItemName());
             catchArticleAmount.setText(AL.getAmount());
-
+            c.setChecked(AL.isPurchased());
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        c.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (c.isChecked()) {
+                    c.setText("Yes");
+                    c.setChecked(true);
+                    try {
+                        AL.setPurchased(true);
+                        AL.setPurchasedStatus("Yes");
+                        getDatabaseHelper().getArticleListDao().update(AL);
+                        Log.i("Sta je u bazi", getDatabaseHelper().getArticleListDao().queryForAll().toString());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    c.setText("No");
+                    c.setChecked(false);
+                    try {
+                        AL.setPurchased(false);
+                        AL.setPurchasedStatus("No");
+                        getDatabaseHelper().getArticleListDao().update(AL);
+                        Log.i("Sta je u bazi", getDatabaseHelper().getArticleListDao().queryForAll().toString());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        // Save and edit button
+        Button button = (Button) findViewById(R.id.btn_edit_item);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                EditText catchArticleName = (EditText) findViewById(R.id.item_name);
+                EditText catchArticleAmount = (EditText) findViewById(R.id.item_amount);
+
+                AL.setItemName(catchArticleName.getText().toString());
+                AL.setAmount(catchArticleAmount.getText().toString());
+
+                try {
+                    getDatabaseHelper().getArticleListDao().update(AL);
+                    Toast.makeText(ArticleActivity.this, "Item detail updated.", Toast.LENGTH_SHORT).show();
+                    finish();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

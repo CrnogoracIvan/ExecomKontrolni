@@ -25,22 +25,6 @@ public class ArticleList {
     @DatabaseField (columnName = FIELD_NAME_AMOUNT)
     private String amount;
 
-    public boolean isPurchased() {
-        return purchased;
-    }
-
-    public void setPurchased(boolean purchased) {
-        this.purchased = purchased;
-    }
-
-    public String getPurchasedStatus() {
-        return purchasedStatus;
-    }
-
-    public void setPurchasedStatus(String purchasedStatus) {
-        this.purchasedStatus = purchasedStatus;
-    }
-
     @DatabaseField(columnName = TABLE_FIELD_PURCHASED)
     private boolean purchased;
 
@@ -49,10 +33,6 @@ public class ArticleList {
 
     @DatabaseField (columnName = FIELD_NAME_SHLIST_NAME, foreign = true, foreignAutoRefresh = true)
     private ShoppingList listName;
-
-
-    private boolean inCart;
-
 
 
     public ArticleList() {
@@ -84,20 +64,29 @@ public class ArticleList {
         this.amount = amount;
     }
 
-    public boolean isInCart() {
-        return inCart;
-    }
-
-    public void setInCart(boolean inCart) {
-        this.inCart = inCart;
-    }
-
     public ShoppingList getListName() {
         return listName;
     }
 
     public void setListName(ShoppingList listName) {
         this.listName = listName;
+    }
+
+    public boolean isPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        this.purchased = purchased;
+    }
+
+
+    public String getPurchasedStatus() {
+        return purchasedStatus;
+    }
+
+    public void setPurchasedStatus(String purchasedStatus) {
+        this.purchasedStatus = purchasedStatus;
     }
 
     @Override

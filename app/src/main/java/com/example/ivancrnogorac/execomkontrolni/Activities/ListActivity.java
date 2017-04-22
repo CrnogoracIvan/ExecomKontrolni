@@ -52,8 +52,13 @@ public class ListActivity extends AppCompatActivity {
             if (adapter != null) {
                 try {
                     adapter.clear();
-                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryForAll();
+                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryBuilder()
+                            .where()
+                            .eq(ArticleList.FIELD_NAME_SHLIST_NAME, SH.getId())
+                            .query();
+
                     adapter.addAll(list);
+
                     adapter.notifyDataSetChanged();
 
                 } catch (java.sql.SQLException e) {

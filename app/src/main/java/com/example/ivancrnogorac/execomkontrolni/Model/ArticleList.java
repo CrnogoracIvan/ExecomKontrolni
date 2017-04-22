@@ -78,6 +78,6 @@ public class ArticleList {
 
     @Override
     public String toString() {
-        return "Item: " + itemName + ", amount: " + amount + " " + listName;
+        return "Item: " + itemName + ", amount: " + amount;
     }
 }

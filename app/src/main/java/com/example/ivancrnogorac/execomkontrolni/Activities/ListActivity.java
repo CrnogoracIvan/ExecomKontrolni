@@ -1,6 +1,7 @@
 package com.example.ivancrnogorac.execomkontrolni.Activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,21 +85,12 @@ public class ListActivity extends AppCompatActivity {
        //Upis imena liste
         try {
             SH = getDatabaseHelper().getShoppingListDao().queryForId(key);
-
            //uzmi polje u koje ces upisati tekst
             ShoppingListName = (TextView) findViewById(R.id.shoppingList_list_name);
-
             // upisi tekst
             ShoppingListName.setText(SH.getShoppingListName());
 
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-
+            //Prikaz itema u listi
             List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryBuilder()
                     .where()
                     .eq(ArticleList.FIELD_NAME_SHLIST_NAME, SH.getId())
@@ -106,14 +98,16 @@ public class ListActivity extends AppCompatActivity {
 
             ListAdapter adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
             listView.setAdapter(adapter);
+            //Otvaranje itema
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ArticleList ALI = (ArticleList) listView.getItemAtPosition(position);
 
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    ArticleList AL = (ArticleList) listView.getItemAtPosition(position);
-//                    //Toast.makeText(PripremaDetail.this, m.getmName()+" "+m.getmGenre()+" "+m.getmYear(), Toast.LENGTH_SHORT).show();
-//
-//                }
-//            });
+                    Intent intent = new Intent(ListActivity.this, ArticleActivity.class);
+                    intent.putExtra(CONTACT_KEY, ALI.getId());
+                    startActivity(intent);
+                }
+            });
 
         } catch (SQLException e) {
             e.printStackTrace();

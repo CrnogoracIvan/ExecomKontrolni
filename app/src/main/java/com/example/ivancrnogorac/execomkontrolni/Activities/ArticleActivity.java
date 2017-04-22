@@ -52,7 +52,14 @@ public class ArticleActivity extends AppCompatActivity {
             catchArticleName.setText(AL.getItemName());
             catchArticleAmount.setText(AL.getAmount());
             c.setChecked(AL.isPurchased());
+
+            if (AL.isPurchased()) {
+                c.setText("Yes");
+            } else {
+                c.setText("No");
+            }
             
+
         } catch (Exception e) {
             e.printStackTrace();
         }

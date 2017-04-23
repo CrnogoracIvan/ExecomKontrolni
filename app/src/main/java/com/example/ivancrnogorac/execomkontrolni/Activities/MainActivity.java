@@ -17,18 +17,19 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.ivancrnogorac.execomkontrolni.Dialog.AboutDialog;
+import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
 import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
 import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     
     private ORMLightHelper databaseHelper;
-
     public static String CONTACT_KEY = "SHOPPING_LIST_KEY";
 
     ///Metoda koja komunicira sa bazom podataka
@@ -59,12 +60,79 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    
+
+    //Refresh metoda
+    private void refreshItem() {
+        ListView listview = (ListView) findViewById(R.id.articleList);
+
+        if (listview != null) {
+            ArrayAdapter<ArticleList> adapter = (ArrayAdapter<ArticleList>) listview.getAdapter();
+
+            if (adapter != null) {
+                try {
+                    adapter.clear();
+                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryForAll();
+                    adapter.addAll(list);
+                    adapter.notifyDataSetChanged();
+
+                } catch (java.sql.SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    //Metoda koja proverava da li je lista kompletirana
+
+    private void  completedSL2(){
+
+        try {
+            List<ShoppingList> shList = getDatabaseHelper().getShoppingListDao().queryForAll();
+            List<ArticleList> shItem = getDatabaseHelper().getArticleListDao().queryForAll();
+
+            for (int i = 0; i < shList.size() ; i++) {
+                Log.i("Log_Lista_kompletirna:", String.valueOf(i) + " " + shList.get(i).getCompleted_text());
+               //if (shList.get(i).getCompleted_text().equals("No")){
+
+                    for (int j = 0; j <shItem.size() ; j++) {
+                        Log.i("Log_pripada_listi",shItem.get(j).getItemName() + " " + shItem.get(j).getListName().toString());
+                        if (shItem.get(j).getPurchasedStatus().equals("No")) {
+                            shList.get(i).setCompleted(false);
+                            shList.get(i).setCompleted_text("No");
+                            getDatabaseHelper().getArticleListDao().update(shItem.get(j));
+                            getDatabaseHelper().getShoppingListDao().update(shList.get(i));
+                            //Log.i("Da li je ili nije", String.valueOf(shItem.get(j).isPurchased()));
+                            Log.i("Log_nije_kompletna",  shList.get(i).getCompleted_text());
+
+                            break;
+                        }else{
+                            shList.get(i).setCompleted(true);
+                            shList.get(i).setCompleted_text("Yes");
+                            getDatabaseHelper().getArticleListDao().update(shItem.get(j));
+                            getDatabaseHelper().getShoppingListDao().update(shList.get(i));
+                            Log.i("Log_je_kompletna",  shList.get(i).getCompleted_text());
+
+                        }
+                    }
+               // getDatabaseHelper().getShoppingListDao().update(shList.get(i));
+                refresh();
+                }
+
+          // }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return;
+    }
 //--------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        refresh();
+//        completedSL2();
 
        //modularni prikaz liste
         final ListView listView = (ListView) findViewById(R.id.shoppingList_list);
@@ -87,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
-
+       // completedSL2();
     }
 
     //kreiranje menija/toolbara
@@ -102,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-
 //            //DIALOG ZA UNOS PODATAKA o novoj listi
             case R.id.add_new_shoppingList:
 
@@ -118,11 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
                         ShoppingList SL = new ShoppingList();
                         SL.setShoppingListName(catchShoppingListName.getText().toString());
+                        SL.setCompleted_text("No");
 
                       //unos zapisa u listu.
                         try {
                             getDatabaseHelper().getShoppingListDao().create(SL);
-                            Log.i("Sta je u bazi?", getDatabaseHelper().getShoppingListDao().queryForAll().toString());
+                            Log.i("Log_Sta je u bazi?", getDatabaseHelper().getShoppingListDao().queryForAll().toString());
 
                         } catch (java.sql.SQLException e) {
                             e.printStackTrace();
@@ -131,24 +199,16 @@ public class MainActivity extends AppCompatActivity {
                         //REFRESH liste
                         refresh();
                         dialog.dismiss();
-
                     }
                 });
                 dialog.show();
                 break;
-
             //About dialog
             case R.id.about_app_dialog:
 
                 AlertDialog alertDialog = new AboutDialog(this).prepareDialog();
                 alertDialog.show();
                 break;
-
-//            //Brisanje liste.
-//            case R.id.delete_shoppingList:
-//                getDatabaseHelper().getShoppingListDao().delete(SL);
-//                finish();
-//                break;
       }
 
         return super.onOptionsItemSelected(item);
@@ -157,8 +217,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
 
-
+        completedSL2();
         refresh();
+
 
         super.onResume();
         try {
@@ -168,6 +229,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+//    @Override
+//    protected void onStart(){
+//        completedSL2();
+//        refresh();
+//        super.onStart();
+//    }
 
     @Override
     protected void onDestroy() {

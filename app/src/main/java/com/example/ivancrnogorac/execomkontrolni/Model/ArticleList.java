@@ -26,7 +26,7 @@ public class ArticleList {
     private String amount;
 
     @DatabaseField(columnName = TABLE_FIELD_PURCHASED)
-    private boolean purchased;
+    private boolean purchased = false;
 
     @DatabaseField (columnName = TABLE_FIELD_PURCHASED_STATUS)
     private String purchasedStatus;
@@ -91,6 +91,6 @@ public class ArticleList {
 
     @Override
     public String toString() {
-        return "Item: " + itemName + ", amount: " + amount;
+        return "Item: " + itemName + ", amount: " + amount + " in cart: "  + purchasedStatus;
     }
 }

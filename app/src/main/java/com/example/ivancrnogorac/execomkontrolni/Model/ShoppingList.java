@@ -17,6 +17,7 @@ public class ShoppingList {
     public static final String FIELD_NAME_ID = "id";
     public static final String TABLE_NAME_NAME = "name";
     public static final String FIELD_NAME_COMPLETED = "completed";
+    public static final String FIELD_NAME_COMPLETED_TEXT = "completed text";
     public static final String TABLE_NAME_ARTICLES = "articles";
 
     @DatabaseField (columnName = FIELD_NAME_ID, generatedId = true)
@@ -27,6 +28,9 @@ public class ShoppingList {
 
     @DatabaseField (columnName = FIELD_NAME_COMPLETED)
     private boolean completed = false;
+
+    @DatabaseField (columnName = FIELD_NAME_COMPLETED_TEXT)
+    private String completed_text;
 
     @ForeignCollectionField(columnName = ShoppingList.TABLE_NAME_ARTICLES, eager = true)
     private ForeignCollection<ArticleList> articles;
@@ -68,6 +72,14 @@ public class ShoppingList {
     }
 
 
+    public String getCompleted_text() {
+        return completed_text;
+    }
+
+    public void setCompleted_text(String completed_text) {
+        this.completed_text = completed_text;
+    }
+
     public ForeignCollection<ArticleList> getArticles() {
         return articles;
     }
@@ -78,6 +90,6 @@ public class ShoppingList {
 
     @Override
     public String toString() {
-        return "Shopping List no: " + id + " - " + shoppingListName + "." ;
+        return "Shopping List no: " + id + " - " + shoppingListName + ", finished: " + completed_text ;
     }
 }

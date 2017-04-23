@@ -6,19 +6,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
 import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
+import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ArticleActivity extends AppCompatActivity {
     private ArticleList AL;
@@ -30,6 +34,49 @@ public class ArticleActivity extends AppCompatActivity {
             databaseHelper = OpenHelperManager.getHelper(this, ORMLightHelper.class);
         }
         return databaseHelper;
+    }
+
+
+    //Refresh metoda
+    private void refresh() {
+        ListView listview = (ListView) findViewById(R.id.articleList);
+
+        if (listview != null) {
+            ArrayAdapter<ArticleList> adapter = (ArrayAdapter<ArticleList>) listview.getAdapter();
+
+            if (adapter != null) {
+                try {
+                    adapter.clear();
+                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryForAll();
+                    adapter.addAll(list);
+                    adapter.notifyDataSetChanged();
+
+                } catch (java.sql.SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    //Refresh metoda
+    private void refreshItem() {
+        ListView listview = (ListView) findViewById(R.id.shoppingList_list);
+
+        if (listview != null) {
+            ArrayAdapter<ArticleList> adapter = (ArrayAdapter<ArticleList>) listview.getAdapter();
+
+            if (adapter != null) {
+                try {
+                    adapter.clear();
+                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryForAll();
+                    adapter.addAll(list);
+                    adapter.notifyDataSetChanged();
+
+                } catch (java.sql.SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -53,6 +100,7 @@ public class ArticleActivity extends AppCompatActivity {
             catchArticleAmount.setText(AL.getAmount());
             c.setChecked(AL.isPurchased());
 
+            //Provera pri ucitavanju da li je kupljeno ili ne. Ako jeste pored checkbox-a upistai yes.
             if (AL.isPurchased()) {
                 c.setText("Yes");
             } else {
@@ -107,6 +155,7 @@ public class ArticleActivity extends AppCompatActivity {
                 try {
                     getDatabaseHelper().getArticleListDao().update(AL);
                     Toast.makeText(ArticleActivity.this, "Item detail updated.", Toast.LENGTH_SHORT).show();
+                    refresh();
                     finish();
 
                 } catch (SQLException e) {
@@ -131,8 +180,9 @@ public class ArticleActivity extends AppCompatActivity {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+               // refreshItem();
+                refresh();
                 finish();
-                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -69,6 +69,47 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
+//    private void  completedSL2(){
+//
+//        try {
+//            List<ShoppingList> shList = getDatabaseHelper().getShoppingListDao().queryForAll();
+//            List<ArticleList> shItem = getDatabaseHelper().getArticleListDao().queryForAll();
+//
+//            for (int i = 0; i < shList.size() ; i++) {
+//                Log.i("Log_Lista_kompletirna:", String.valueOf(i) + " " + shList.get(i).getCompleted_text());
+//                //if (shList.get(i).getCompleted_text().equals("No")){
+//
+//                for (int j = 0; j <shItem.size() ; j++) {
+//                    Log.i("Log_pripada_listi",shItem.get(j).getItemName() + " " + shItem.get(j).getListName().toString());
+//                    if (shItem.get(j).getPurchasedStatus().equals("No")) {
+//                        shList.get(i).setCompleted(false);
+//                        shList.get(i).setCompleted_text("No");
+//                        //Log.i("Da li je ili nije", String.valueOf(shItem.get(j).isPurchased()));
+//                        Log.i("Log_nije_kompletna",  shList.get(i).getCompleted_text());
+//
+//                        break;
+//                    }else{
+//                        shList.get(i).setCompleted(true);
+//                        shList.get(i).setCompleted_text("Yes");
+//                        getDatabaseHelper().getArticleListDao().update(shItem.get(j));
+//                        Log.i("Log_je_kompletna",  shList.get(i).getCompleted_text());
+//
+//                    }
+//
+//                }
+//                getDatabaseHelper().getShoppingListDao().update(shList.get(i));
+//                refresh();
+//            }
+//
+//            // }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return;
+//    }
+
+
 //--------------------------------------------------------------------------------------------
 
     @Override
@@ -106,6 +147,7 @@ public class ListActivity extends AppCompatActivity {
                     Intent intent = new Intent(ListActivity.this, ArticleActivity.class);
                     intent.putExtra(CONTACT_KEY, ALI.getId());
                     startActivity(intent);
+//                    completedSL2();
                 }
             });
 
@@ -149,7 +191,8 @@ public class ListActivity extends AppCompatActivity {
 
                         ArticleList AL = new ArticleList();
                         AL.setItemName(catchArticleListName.getText().toString());
-                        AL.setAmount(catchArticleListAmount.getText().toString());;
+                        AL.setAmount(catchArticleListAmount.getText().toString());
+                        AL.setPurchasedStatus("No");
                         AL.setListName(SH);
 
                         //unos zapisa u listu.

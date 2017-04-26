@@ -32,6 +32,7 @@ public class ListActivity extends AppCompatActivity {
     private ORMLightHelper databaseHelper;
     private ShoppingList SH;
     private TextView ShoppingListName;
+    private List<ShoppingList> mainList;
 
     public static String CONTACT_KEY = "ITEM_KEY";
 
@@ -65,6 +66,25 @@ public class ListActivity extends AppCompatActivity {
                 } catch (java.sql.SQLException e) {
                     e.printStackTrace();
                 }
+            }
+        }
+    }
+
+    private void completedSL() {
+        for (ShoppingList main : mainList) {
+            for (ArticleList items : main.getArticles()) {
+                if (!items.isPurchased()) {
+                    main.setCompleted_text(MainActivity.Completed.NOT_COMPLETED.toString());
+                    break;
+                } else {
+                    main.setCompleted_text(MainActivity.Completed.COMPLETED.toString());
+                    break;
+                }
+            }
+            try {
+                getDatabaseHelper().getShoppingListDao().update(main);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -242,6 +262,13 @@ public class ListActivity extends AppCompatActivity {
         }
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        completedSL();
+//        super.onBackPressed();
+//    }
+
 
     @Override
     protected void onDestroy() {

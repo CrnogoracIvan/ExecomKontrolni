@@ -58,29 +58,6 @@ public class ArticleActivity extends AppCompatActivity {
         }
     }
 
-    //Refresh metoda
-    private void refreshItem() {
-        ListView listview = (ListView) findViewById(R.id.shoppingList_list);
-
-        if (listview != null) {
-            ArrayAdapter<ArticleList> adapter = (ArrayAdapter<ArticleList>) listview.getAdapter();
-
-            if (adapter != null) {
-                try {
-                    adapter.clear();
-                    List<ArticleList> list = getDatabaseHelper().getArticleListDao().queryForAll();
-                    adapter.addAll(list);
-                    adapter.notifyDataSetChanged();
-
-                } catch (java.sql.SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
-
     //-----------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,10 +161,8 @@ public class ArticleActivity extends AppCompatActivity {
                 refresh();
                 finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onDestroy() {

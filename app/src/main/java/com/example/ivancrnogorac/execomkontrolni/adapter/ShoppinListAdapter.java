@@ -1,14 +1,13 @@
 package com.example.ivancrnogorac.execomkontrolni.adapter;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
+import com.example.ivancrnogorac.execomkontrolni.model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
 
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class ShoppinListAdapter extends BaseAdapter {
         SHList.clear();
     }
 
-    public void sortByCompletion (){
+    public void sortByCompletion(){
         Collections.sort(SHList, new Comparator<ShoppingList>() {
             @Override
             public int compare(ShoppingList o1, ShoppingList o2) {

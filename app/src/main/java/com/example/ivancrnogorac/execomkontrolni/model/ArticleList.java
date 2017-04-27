@@ -1,4 +1,4 @@
-package com.example.ivancrnogorac.execomkontrolni.Model;
+package com.example.ivancrnogorac.execomkontrolni.model;
 
 import com.j256.ormlite.field.DatabaseField;
 

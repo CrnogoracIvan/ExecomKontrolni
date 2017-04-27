@@ -1,4 +1,4 @@
-package com.example.ivancrnogorac.execomkontrolni.Activities;
+package com.example.ivancrnogorac.execomkontrolni.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +15,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
-import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
-import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
+import com.example.ivancrnogorac.execomkontrolni.model.ArticleList;
+import com.example.ivancrnogorac.execomkontrolni.model.ORMLightHelper;
 import com.example.ivancrnogorac.execomkontrolni.R;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
@@ -35,7 +34,6 @@ public class ArticleActivity extends AppCompatActivity {
         }
         return databaseHelper;
     }
-
 
     //Refresh metoda
     private void refresh() {
@@ -57,7 +55,6 @@ public class ArticleActivity extends AppCompatActivity {
             }
         }
     }
-
     //-----------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +74,12 @@ public class ArticleActivity extends AppCompatActivity {
             catchArticleAmount.setText(AL.getAmount());
             c.setChecked(AL.isPurchased());
 
-            //Provera pri ucitavanju da li je kupljeno ili ne. Ako jeste pored checkbox-a upistai yes.
+            //Provera pri ucitavanju da li je kupljeno ili ne. Ako jeste pored checkbox-a upisati yes.
             if (AL.isPurchased()) {
                 c.setText("Yes");
             } else {
                 c.setText("No");
             }
-            
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,8 +164,7 @@ public class ArticleActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        // nakon rada sa bazo podataka potrebno je obavezno
-        // osloboditi resurse!
+        // DB oslobadjanje resursa
         if (databaseHelper != null) {
             OpenHelperManager.releaseHelper();
             databaseHelper = null;

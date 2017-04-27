@@ -28,6 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="2"
             android:orientation="vertical">
             <TextView
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="Shopping list name"
-                android:textStyle="italic"/>
+                android:textStyle="italic|bold"/>
             <TextView
                 android:id="@+id/tv_completed"
                 android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.example.ivancrnogorac.execomkontrolni.Activities;
+package com.example.ivancrnogorac.execomkontrolni.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -13,20 +13,18 @@ import android.widget.AdapterView;
 //import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.example.ivancrnogorac.execomkontrolni.Dialog.AboutDialog;
-import com.example.ivancrnogorac.execomkontrolni.Model.ArticleList;
-import com.example.ivancrnogorac.execomkontrolni.Model.ORMLightHelper;
-import com.example.ivancrnogorac.execomkontrolni.Model.ShoppingList;
+import com.example.ivancrnogorac.execomkontrolni.dialog.AboutDialog;
+import com.example.ivancrnogorac.execomkontrolni.model.ArticleList;
+import com.example.ivancrnogorac.execomkontrolni.model.ORMLightHelper;
+import com.example.ivancrnogorac.execomkontrolni.model.ShoppingList;
 import com.example.ivancrnogorac.execomkontrolni.R;
 import com.example.ivancrnogorac.execomkontrolni.adapter.ShoppinListAdapter;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -45,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return databaseHelper;
     }
-
 
     // Refresh metoda
     private void refresh() {
@@ -113,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             mainList = getDatabaseHelper().getShoppingListDao().queryForAll();
-            //ListAdapter adapter = new ArrayAdapter<>(MainActivity.this, R.layout.list_item, mainList);
             adapter = new ShoppinListAdapter(MainActivity.this, (ArrayList<ShoppingList>)mainList);
 
             completedSL();
@@ -128,11 +124,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         } catch (java.sql.SQLException e) {
             e.printStackTrace();
         }
-
         refresh();
     }
     //kreiranje menija/toolbara
@@ -193,21 +187,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
 
         refresh();
+        completedSL();
         super.onResume();
         try {
             Log.i("Sta je u bazi?", getDatabaseHelper().getShoppingListDao().queryForAll().toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        // nakon rada sa bazo podataka potrebno je obavezno
-        //osloboditi resurse!
         if (databaseHelper != null) {
             OpenHelperManager.releaseHelper();
             databaseHelper = null;

@@ -1,9 +1,8 @@
-package com.example.ivancrnogorac.execomkontrolni.Dialog;
+package com.example.ivancrnogorac.execomkontrolni.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import com.example.ivancrnogorac.execomkontrolni.R;
 
 
 public class AboutDialog extends AlertDialog.Builder{
@@ -12,7 +11,8 @@ public class AboutDialog extends AlertDialog.Builder{
         super(context);
 
         setTitle("About aplication");
-        setMessage("Application creator: Ivan Crnogorac, email: ivan.crnogorac@yahoo.com, contact phone: 060-363-7673");
+        setMessage("Application creator: Ivan Crnogorac" + "\n" + "email: ivan.crnogorac@yahoo.com," +"\n"+
+                "contact phone: 060-363-7673");
         setCancelable(false);
 
         setPositiveButton("OK", new DialogInterface.OnClickListener() {
